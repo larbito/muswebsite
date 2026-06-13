@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.DS_Store
+# Drag-drop image overrides written at runtime by image-slot.js
+tvdyalek/*.state.json
