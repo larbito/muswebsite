@@ -211,7 +211,7 @@ function Channels() {
     className: "section-head reveal"
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-kicker"
-  }, "\u0627\u0644\u0642\u0646\u0648\u0627\u062A"), /*#__PURE__*/React.createElement("h2", null, "+12,000 \u0642\u0646\u0627\u0629 ", /*#__PURE__*/React.createElement("span", {
+  }, "\u0627\u0644\u0642\u0646\u0648\u0627\u062A"), /*#__PURE__*/React.createElement("h2", null, "+60,000 \u0642\u0646\u0627\u0629 ", /*#__PURE__*/React.createElement("span", {
     className: "grad-text"
   }, "\u0645\u0646 \u0643\u0644 \u0627\u0644\u0639\u0627\u0644\u0645")), /*#__PURE__*/React.createElement("p", null, "\u0631\u064A\u0627\u0636\u0629\u060C \u0623\u062E\u0628\u0627\u0631\u060C \u0623\u0641\u0644\u0627\u0645\u060C \u0645\u0633\u0644\u0633\u0644\u0627\u062A \u0648\u0642\u0646\u0648\u0627\u062A \u0623\u0637\u0641\u0627\u0644 \u2014 \u0639\u0631\u0628\u064A\u0629 \u0648\u0639\u0627\u0644\u0645\u064A\u0629 \u0628\u062C\u0648\u062F\u0629 \u062A\u0635\u0644 \u0625\u0644\u0649 4K"))), /*#__PURE__*/React.createElement("div", {
     className: "chan-rail reveal"
@@ -233,7 +233,7 @@ function Channels() {
     tag: t
   }))))), /*#__PURE__*/React.createElement("div", {
     className: "chan-note"
-  }, "\u0648\u0647\u0630\u0647 \u0645\u062C\u0631\u062F \u0639\u064A\u0651\u0646\u0629 \u2014 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 \u062A\u0636\u0645 \u0623\u0643\u062B\u0631 \u0645\u0646 12,000 \u0642\u0646\u0627\u0629 \u0645\u0646 \u0643\u0644 \u0627\u0644\u062F\u0648\u0644"), /*#__PURE__*/React.createElement(ChannelCats, null));
+  }, "\u0648\u0647\u0630\u0647 \u0645\u062C\u0631\u062F \u0639\u064A\u0651\u0646\u0629 \u2014 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0643\u0627\u0645\u0644\u0629 \u062A\u0636\u0645 \u0623\u0643\u062B\u0631 \u0645\u0646 60,000 \u0642\u0646\u0627\u0629 \u0645\u0646 \u0643\u0644 \u0627\u0644\u062F\u0648\u0644"), /*#__PURE__*/React.createElement(ChannelCats, null));
 }
 
 /* Mid-page CTA: 1-day trial */

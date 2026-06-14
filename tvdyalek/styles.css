@@ -75,7 +75,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: pointer; }
 
-.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(26px, 5vw, 64px); }
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(30px, 5.5vw, 64px); }
 
 .grad-text {
   background: var(--grad);
@@ -146,8 +146,11 @@ button { font-family: inherit; cursor: pointer; }
 }
 .hero-inner {
   display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
-  gap: 56px; align-items: center; padding: 84px 0 96px;
+  gap: 56px; align-items: center; padding-block: 84px 96px;
 }
+/* let grid items shrink so long Arabic headings can't push past the gutter */
+.hero-inner > * { min-width: 0; }
+.hero h1, .hero-sub { overflow-wrap: break-word; }
 .hero-kicker {
   display: inline-flex; align-items: center; gap: 10px;
   border: 1px solid var(--line-strong); border-radius: 999px;
@@ -936,24 +939,31 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Channel categories ---------- */
 .chan-cats {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 44px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px;
 }
 .chan-cat {
-  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: calc(var(--radius) * .8); padding: 22px 12px 18px;
-  transition: transform .2s ease, border-color .2s ease;
+  display: flex; align-items: center; gap: 16px; text-align: start;
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px 22px;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
 }
-.chan-cat:hover { transform: translateY(-4px); border-color: var(--line-strong); }
-.chan-cat svg { width: 24px; height: 24px; color: var(--accent); }
-.chan-cat b { font-size: 14.5px; font-weight: 700; }
-.chan-cat span { color: var(--muted); font-size: 12.5px; font-weight: 700; }
+.chan-cat:hover { transform: translateY(-4px); border-color: var(--line-strong); background: var(--surface); }
+.chan-cat-ic {
+  flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--surface-2); border: 1px solid var(--line-strong); color: var(--accent);
+}
+.chan-cat-ic svg { width: 24px; height: 24px; }
+.chan-cat-num {
+  font-family: var(--font-head); font-size: 24px; font-weight: 700; line-height: 1.1;
+  color: var(--accent-soft); display: block;
+}
+.chan-cat-label { color: var(--muted); font-size: 13.5px; font-weight: 700; display: block; margin-top: 2px; }
 .chan-cats-note {
-  grid-column: 1 / -1; text-align: center;
-  color: var(--muted); font-size: 13.5px; font-weight: 700; margin-top: 8px;
+  text-align: center; color: var(--muted); font-size: 13.5px; font-weight: 700; margin-top: 22px;
 }
-@media (max-width: 1024px) { .chan-cats { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 560px) { .chan-cats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .chan-cats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .chan-cats { grid-template-columns: 1fr; } }
 
 /* ---------- Scroll nudge ---------- */
 .nudge {
@@ -1042,7 +1052,7 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 56px 0 64px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; padding-block: 56px 64px; }
   .hero h1 { font-size: 42px; text-shadow: 0 2px 16px rgba(0,0,0,.5); }
   .hero-sub { text-shadow: 0 1px 12px rgba(0,0,0,.5); }
   /* The desktop veil darkens the right column where the Arabic text sits; once
@@ -1069,6 +1079,9 @@ button { font-family: inherit; cursor: pointer; }
   .features, .plans { grid-template-columns: 1fr; }
   .hero h1 { font-size: 34px; line-height: 1.18; }
   .hero-sub { font-size: 16.5px; }
+  /* show the whole sports photo (all players) instead of a tight crop */
+  .hero-slide { background-size: contain; background-position: center 32%; }
+  .hero-slide.on { animation: none; }
   .hero-ctas { gap: 12px; margin-top: 28px; }
   .hero-ctas .btn { flex: 1 1 0; justify-content: center; }
   .hero-rating { width: 100%; box-sizing: border-box; }

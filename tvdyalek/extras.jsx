@@ -68,26 +68,28 @@ function LegalModal({ doc, onClose }) {
 
 /* ---------- Channel categories breakdown ---------- */
 function ChannelCats() {
+  // Counts add up to the headline totals used across the site:
+  // channels 12k+40k+3k+5k = 60,000 · VOD 70k+50k = 120,000
   const cats = [
-    { icon: 'trophy', name: 'رياضة مباشرة', count: '+1,200 قناة' },
-    { icon: 'quality', name: 'أفلام وسينما', count: '+45,000 فيلم' },
-    { icon: 'tv', name: 'مسلسلات وعروض', count: '+12,000 عمل' },
-    { icon: 'star', name: 'أطفال وعائلة', count: '+600 قناة' },
-    { icon: 'shield', name: 'وثائقيات وأخبار', count: '+900 قناة' },
-    { icon: 'devices', name: 'قنوات عربية وعالمية', count: '+9,000 قناة' },
+    { icon: 'trophy', num: '+12,000', label: 'قناة رياضية مباشرة' },
+    { icon: 'tv', num: '+40,000', label: 'قناة عربية وعالمية' },
+    { icon: 'kids', num: '+3,000', label: 'قناة أطفال وعائلة' },
+    { icon: 'shield', num: '+5,000', label: 'قناة أخبار ووثائقيات' },
+    { icon: 'film', num: '+70,000', label: 'فيلم ومحتوى سينمائي' },
+    { icon: 'series', num: '+50,000', label: 'حلقة مسلسلات وعروض' },
   ];
   return (
     <div className="wrap">
       <div className="chan-cats reveal">
         {cats.map((c) => (
-          <div className="chan-cat" key={c.name}>
-            <Icon name={c.icon} />
-            <b>{c.name}</b>
-            <span>{c.count}</span>
+          <div className="chan-cat" key={c.label}>
+            <span className="chan-cat-ic"><Icon name={c.icon} /></span>
+            <b className="chan-cat-num">{c.num}</b>
+            <span className="chan-cat-label">{c.label}</span>
           </div>
         ))}
-        <div className="chan-cats-note">كل التصنيفات متوفرة في جميع الباقات — بدون أي زيادة في السعر</div>
       </div>
+      <div className="chan-cats-note">كل التصنيفات متوفرة في جميع الباقات — بدون أي زيادة في السعر</div>
     </div>
   );
 }

@@ -74,30 +74,32 @@ function LegalModal({
 
 /* ---------- Channel categories breakdown ---------- */
 function ChannelCats() {
+  // Counts add up to the headline totals used across the site:
+  // channels 12k+40k+3k+5k = 60,000 · VOD 70k+50k = 120,000
   const cats = [{
     icon: 'trophy',
-    name: 'رياضة مباشرة',
-    count: '+1,200 قناة'
-  }, {
-    icon: 'quality',
-    name: 'أفلام وسينما',
-    count: '+45,000 فيلم'
+    num: '+12,000',
+    label: 'قناة رياضية مباشرة'
   }, {
     icon: 'tv',
-    name: 'مسلسلات وعروض',
-    count: '+12,000 عمل'
+    num: '+40,000',
+    label: 'قناة عربية وعالمية'
   }, {
-    icon: 'star',
-    name: 'أطفال وعائلة',
-    count: '+600 قناة'
+    icon: 'kids',
+    num: '+3,000',
+    label: 'قناة أطفال وعائلة'
   }, {
     icon: 'shield',
-    name: 'وثائقيات وأخبار',
-    count: '+900 قناة'
+    num: '+5,000',
+    label: 'قناة أخبار ووثائقيات'
   }, {
-    icon: 'devices',
-    name: 'قنوات عربية وعالمية',
-    count: '+9,000 قناة'
+    icon: 'film',
+    num: '+70,000',
+    label: 'فيلم ومحتوى سينمائي'
+  }, {
+    icon: 'series',
+    num: '+50,000',
+    label: 'حلقة مسلسلات وعروض'
   }];
   return /*#__PURE__*/React.createElement("div", {
     className: "wrap"
@@ -105,12 +107,18 @@ function ChannelCats() {
     className: "chan-cats reveal"
   }, cats.map(c => /*#__PURE__*/React.createElement("div", {
     className: "chan-cat",
-    key: c.name
+    key: c.label
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "chan-cat-ic"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: c.icon
-  }), /*#__PURE__*/React.createElement("b", null, c.name), /*#__PURE__*/React.createElement("span", null, c.count))), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("b", {
+    className: "chan-cat-num"
+  }, c.num), /*#__PURE__*/React.createElement("span", {
+    className: "chan-cat-label"
+  }, c.label)))), /*#__PURE__*/React.createElement("div", {
     className: "chan-cats-note"
-  }, "\u0643\u0644 \u0627\u0644\u062A\u0635\u0646\u064A\u0641\u0627\u062A \u0645\u062A\u0648\u0641\u0631\u0629 \u0641\u064A \u062C\u0645\u064A\u0639 \u0627\u0644\u0628\u0627\u0642\u0627\u062A \u2014 \u0628\u062F\u0648\u0646 \u0623\u064A \u0632\u064A\u0627\u062F\u0629 \u0641\u064A \u0627\u0644\u0633\u0639\u0631")));
+  }, "\u0643\u0644 \u0627\u0644\u062A\u0635\u0646\u064A\u0641\u0627\u062A \u0645\u062A\u0648\u0641\u0631\u0629 \u0641\u064A \u062C\u0645\u064A\u0639 \u0627\u0644\u0628\u0627\u0642\u0627\u062A \u2014 \u0628\u062F\u0648\u0646 \u0623\u064A \u0632\u064A\u0627\u062F\u0629 \u0641\u064A \u0627\u0644\u0633\u0639\u0631"));
 }
 
 /* ---------- Scroll-triggered trial nudge (once per session) ---------- */

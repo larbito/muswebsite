@@ -168,7 +168,7 @@ function Channels() {
       <div className="wrap">
         <div className="section-head reveal">
           <div className="section-kicker">القنوات</div>
-          <h2>+12,000 قناة <span className="grad-text">من كل العالم</span></h2>
+          <h2>+60,000 قناة <span className="grad-text">من كل العالم</span></h2>
           <p>رياضة، أخبار، أفلام، مسلسلات وقنوات أطفال — عربية وعالمية بجودة تصل إلى 4K</p>
         </div>
       </div>
@@ -184,7 +184,7 @@ function Channels() {
           </div>
         </div>
       </div>
-      <div className="chan-note">وهذه مجرد عيّنة — القائمة الكاملة تضم أكثر من 12,000 قناة من كل الدول</div>
+      <div className="chan-note">وهذه مجرد عيّنة — القائمة الكاملة تضم أكثر من 60,000 قناة من كل الدول</div>
       <ChannelCats />
     </section>
   );
