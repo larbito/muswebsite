@@ -127,12 +127,14 @@ function ScrollNudge({ onOrder }) {
 /* ---------- Sports leagues logo strip ---------- */
 function LeagueLogos() {
   const logos = [
-    { src: 'tvdyalek/logos/league-a.webp', name: 'beIN SPORTS' },
-    { src: 'tvdyalek/logos/nba.webp', name: 'NBA' },
-    { src: 'tvdyalek/logos/skysports.png', name: 'Sky Sports' },
+    { src: 'tvdyalek/logos/league-b.webp', name: 'Premier League' },
+    { src: 'tvdyalek/logos/laliga.svg', name: 'LaLiga' },
+    { src: 'tvdyalek/logos/champions-league.png', name: 'UEFA Champions League' },
+    { src: 'tvdyalek/logos/europa-league.png', name: 'UEFA Europa League' },
+    { src: 'tvdyalek/logos/conference-league.png', name: 'UEFA Conference League' },
     { src: 'tvdyalek/logos/bundesliga.webp', name: 'Bundesliga' },
     { src: 'tvdyalek/logos/ligue1.png', name: 'Ligue 1' },
-    { src: 'tvdyalek/logos/league-b.webp', name: 'بطولات عالمية' },
+    { src: 'tvdyalek/logos/nba.webp', name: 'NBA' },
   ];
   return (
     <section className="section leagues" id="leagues">
@@ -141,7 +143,9 @@ function LeagueLogos() {
         <div className="leagues-row reveal">
           {logos.map((l) => (
             <span className="league-logo" key={l.name} title={l.name}>
-              <img src={l.src} alt={l.name} loading="lazy" />
+              {/* hide a tile if its logo file isn't present yet */}
+              <img src={l.src} alt={l.name} loading="lazy"
+                   onError={(e) => { e.currentTarget.closest('.league-logo').style.display = 'none'; }} />
             </span>
           ))}
         </div>
