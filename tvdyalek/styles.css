@@ -1031,8 +1031,22 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; padding: 60px 0 70px; }
-  .hero h1 { font-size: 42px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 56px 0 64px; }
+  .hero h1 { font-size: 42px; text-shadow: 0 2px 16px rgba(0,0,0,.5); }
+  .hero-sub { text-shadow: 0 1px 12px rgba(0,0,0,.5); }
+  /* The desktop veil darkens the right column where the Arabic text sits; once
+     the layout stacks to one column that hides the slider, so swap to a vertical
+     scrim — image visible up top, fading to solid where the content sits. */
+  .hero-veil {
+    background:
+      radial-gradient(600px 360px at 50% -8%, var(--glow), transparent 62%),
+      linear-gradient(180deg,
+        color-mix(in oklab, var(--bg) 16%, transparent) 0%,
+        color-mix(in oklab, var(--bg) 30%, transparent) 30%,
+        color-mix(in oklab, var(--bg) 58%, transparent) 56%,
+        color-mix(in oklab, var(--bg) 84%, transparent) 80%,
+        var(--bg) 100%);
+  }
   .features { grid-template-columns: 1fr 1fr; }
   .plans { grid-template-columns: 1fr 1fr; }
   .show-row { grid-template-columns: repeat(4, 1fr); }
@@ -1042,9 +1056,16 @@ button { font-family: inherit; cursor: pointer; }
 }
 @media (max-width: 640px) {
   .features, .plans { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 34px; }
-  .hero-stats { flex-wrap: wrap; gap: 18px; }
+  .hero h1 { font-size: 34px; line-height: 1.18; }
+  .hero-sub { font-size: 16.5px; }
+  .hero-ctas { gap: 12px; margin-top: 28px; }
+  .hero-ctas .btn { flex: 1 1 0; justify-content: center; }
+  .hero-rating { width: 100%; box-sizing: border-box; }
+  /* 2x2 stats grid reads cleaner than a cramped single row on a phone */
+  .hero-stats { flex-wrap: wrap; gap: 18px 14px; }
+  .hero-stat { flex: 1 1 40%; }
   .hero-stat + .hero-stat { border: none; padding: 0; }
+  .hero-stat b, .hero-stat span { text-shadow: 0 1px 8px rgba(0,0,0,.7); }
   .show-row { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
 }
