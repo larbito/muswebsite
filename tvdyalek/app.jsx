@@ -12,7 +12,6 @@ const THEME_NAMES = { gold: "ذهبي", red: "أحمر", violet: "بنفسجي" 
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [order, setOrder] = React.useState(null); // null | {plan?}
 
   // Apply tweaks to :root
   React.useEffect(() => {
@@ -38,7 +37,10 @@ function App() {
     return () => { clearTimeout(timer); io.disconnect(); };
   }, []);
 
-  const openOrder = (plan) => setOrder({ plan: plan || null });
+  // Checkout is now a dedicated page (not a modal). Carry the chosen plan via ?plan=
+  const openOrder = (plan) => {
+    window.location.href = 'checkout.html' + (plan && plan.id ? '?plan=' + encodeURIComponent(plan.id) : '');
+  };
 
   return (
     <React.Fragment>
@@ -66,7 +68,6 @@ function App() {
       <StickyCta onOrder={openOrder} />
       <ScrollNudge onOrder={openOrder} />
       <BackToTop />
-      {order && <Checkout plan={order.plan} onClose={() => setOrder(null)} />}
 
       <TweaksPanel>
         <TweakSection label="الهوية البصرية" />

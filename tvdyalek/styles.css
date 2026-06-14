@@ -565,10 +565,9 @@ button { font-family: inherit; cursor: pointer; }
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
-.marquee-track { display: flex; gap: 16px; width: max-content; }
+.marquee-track { display: flex; gap: 16px; width: max-content; will-change: transform; }
 @media (prefers-reduced-motion: no-preference) {
   .marquee-track { animation: marqueeMove 42s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
   @keyframes marqueeMove { to { transform: translateX(-50%); } }
 }
 .marquee img {
@@ -744,12 +743,17 @@ button { font-family: inherit; cursor: pointer; }
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .chan-row { overflow: hidden; padding: 10px 0; }
-.chan-track { display: flex; align-items: center; width: max-content; }
+.chan-track { display: flex; align-items: center; width: max-content; will-change: transform; }
 @media (prefers-reduced-motion: no-preference) {
   .chan-track { animation: chanMove 48s linear infinite; }
   .chan-row-rev .chan-track { animation-direction: reverse; animation-duration: 60s; }
-  .chan-row:hover .chan-track { animation-play-state: paused; }
   @keyframes chanMove { to { transform: translateX(-50%); } }
+}
+/* Pause-on-hover only where a real pointer exists — on touch screens :hover
+   sticks after a tap and would freeze the strips mid-scroll. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .marquee:hover .marquee-track,
+  .chan-row:hover .chan-track { animation-play-state: paused; }
 }
 .chan { display: flex; align-items: center; flex: none; direction: rtl; }
 .chan b {
@@ -1005,15 +1009,17 @@ button { font-family: inherit; cursor: pointer; }
 }
 .league-logo img {
   max-height: 72px; max-width: 100%; object-fit: contain;
-  filter: brightness(0) invert(1) drop-shadow(0 0 10px color-mix(in oklab, var(--accent) 55%, transparent));
-  opacity: .9;
+  /* static rgba (not color-mix) so the whole filter stays valid across browsers
+     — otherwise the brightness/invert is dropped and the logos render dark. */
+  filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(226, 182, 100, .5));
+  opacity: .92;
   transition: opacity .25s ease, transform .25s ease, filter .25s ease;
 }
 @media (prefers-reduced-motion: no-preference) {
   .league-logo img { animation: leagueGlow 3.6s ease-in-out infinite alternate; }
   @keyframes leagueGlow {
-    from { filter: brightness(0) invert(1) drop-shadow(0 0 4px color-mix(in oklab, var(--accent) 25%, transparent)); }
-    to { filter: brightness(0) invert(1) drop-shadow(0 0 14px color-mix(in oklab, var(--accent) 70%, transparent)); }
+    from { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(226, 182, 100, .25)); }
+    to { filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(226, 182, 100, .65)); }
   }
 }
 .league-logo:hover img { opacity: 1; transform: scale(1.08); }
@@ -1061,11 +1067,67 @@ button { font-family: inherit; cursor: pointer; }
   .hero-ctas { gap: 12px; margin-top: 28px; }
   .hero-ctas .btn { flex: 1 1 0; justify-content: center; }
   .hero-rating { width: 100%; box-sizing: border-box; }
-  /* 2x2 stats grid reads cleaner than a cramped single row on a phone */
-  .hero-stats { flex-wrap: wrap; gap: 18px 14px; }
-  .hero-stat { flex: 1 1 40%; }
+  /* even 2x2 grid; smaller numbers so +120,000 / +60,000 don't crowd the edge */
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+  .hero-stat { min-width: 0; }
+  .hero-stat b { font-size: 20px; }
+  .hero-stat span { font-size: 12.5px; }
   .hero-stat + .hero-stat { border: none; padding: 0; }
   .hero-stat b, .hero-stat span { text-shadow: 0 1px 8px rgba(0,0,0,.7); }
   .show-row { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
+}
+
+/* ---------- Standalone pages: checkout.html / thank-you.html ---------- */
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+.page-head {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 720px; margin: 0 auto; box-sizing: border-box;
+  padding: 22px 28px;
+}
+.logo-text { font-family: var(--font-head); font-weight: 700; font-size: 20px; letter-spacing: .04em; }
+.page-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted); font-weight: 700; font-size: 14px;
+}
+.page-back:hover { color: var(--accent-soft); }
+.page-back svg { width: 16px; height: 16px; }
+.page-main {
+  flex: 1; width: 100%; max-width: 720px; margin: 0 auto; box-sizing: border-box;
+  padding: 12px 28px 64px; display: flex; align-items: flex-start; justify-content: center;
+}
+.co-card, .thanks-card {
+  width: 100%; max-width: 520px; box-sizing: border-box;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: calc(var(--radius) * 1.2); padding: 32px 30px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.co-card-head h1 { font-size: 28px; font-weight: 700; }
+.co-card-head p { color: var(--muted); font-size: 15px; margin-top: 8px; }
+.co-note { color: var(--muted); font-size: 14px; line-height: 1.9; margin: -4px 0 2px; }
+
+.thanks-card { text-align: center; align-items: center; max-width: 540px; }
+.thanks-icon {
+  width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  border: 1px solid var(--line-strong); color: var(--accent);
+}
+.thanks-icon svg { width: 38px; height: 38px; }
+.thanks-card h1 { font-size: 30px; font-weight: 700; }
+.thanks-card > p { color: var(--muted); font-size: 16px; line-height: 1.9; max-width: 42ch; }
+.thanks-price { color: var(--accent-soft); font-weight: 800; }
+.wa-cta { width: 100%; max-width: 340px; }
+.thanks-steps {
+  list-style: none; padding: 18px 0 0; margin: 4px 0 0; width: 100%;
+  border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px;
+  text-align: start;
+}
+.thanks-steps li { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14.5px; }
+.thanks-steps svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
+
+@media (max-width: 560px) {
+  .page-head, .page-main { padding-inline: 18px; }
+  .co-card, .thanks-card { padding: 26px 20px; }
+  .co-card-head h1 { font-size: 24px; }
+  .thanks-card h1 { font-size: 26px; }
 }
