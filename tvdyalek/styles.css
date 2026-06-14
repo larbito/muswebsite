@@ -75,7 +75,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: pointer; }
 
-.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(26px, 5vw, 64px); }
 
 .grad-text {
   background: var(--grad);
@@ -160,13 +160,13 @@ button { font-family: inherit; cursor: pointer; }
 .hero-sub strong { color: var(--accent-soft); font-weight: 800; }
 .hero-ctas { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; }
 .hero-stats {
-  display: flex; gap: 0; margin-top: 44px;
+  display: flex; flex-wrap: wrap; gap: 0; margin-top: 44px;
   border-top: 1px solid var(--line); padding-top: 26px;
 }
-.hero-stat { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.hero-stat + .hero-stat { border-inline-start: 1px solid var(--line); padding-inline-start: 22px; }
-.hero-stat b { font-family: var(--font-head); font-size: 26px; font-weight: 700; }
-.hero-stat span { color: var(--muted); font-size: 13.5px; }
+.hero-stat { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.hero-stat + .hero-stat { border-inline-start: 1px solid var(--line); padding-inline-start: 18px; }
+.hero-stat b { font-family: var(--font-head); font-size: clamp(19px, 1.7vw, 23px); font-weight: 700; white-space: nowrap; }
+.hero-stat span { color: var(--muted); font-size: 13px; }
 
 /* ---------- Hero image slider ---------- */
 .hero-slider { position: absolute; inset: 0; overflow: hidden; }
@@ -859,30 +859,32 @@ button { font-family: inherit; cursor: pointer; }
 }
 .wc-title { font-size: clamp(30px, 3.4vw, 44px); font-weight: 700; line-height: 1.26; margin-top: 20px; }
 .wc-text { color: var(--muted); font-size: 15.5px; line-height: 2; margin-top: 14px; }
-.wc-facts { display: flex; flex-wrap: wrap; margin-top: 30px; }
-.wc-fact { display: flex; flex-direction: column; gap: 6px; }
-.wc-fact + .wc-fact { border-inline-start: 1px solid var(--line-strong); padding-inline-start: 17px; margin-inline-start: 17px; }
+.wc-facts { display: flex; flex-wrap: nowrap; margin-top: 30px; }
+.wc-fact { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 0 1 auto; }
+.wc-fact + .wc-fact { border-inline-start: 1px solid var(--line-strong); padding-inline-start: 16px; margin-inline-start: 16px; }
 .wc-fact b {
-  font-family: var(--font-head); font-size: clamp(32px, 3.6vw, 46px); font-weight: 700; line-height: 1;
+  font-family: var(--font-head); font-size: clamp(24px, 2.8vw, 36px); font-weight: 700; line-height: 1; white-space: nowrap;
   background: linear-gradient(115deg, var(--accent-soft), var(--accent) 35%, #fff6dd 50%, var(--accent) 65%, var(--accent-soft));
   background-size: 250% 250%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter:
-    drop-shadow(0 0 10px color-mix(in oklab, var(--accent) 45%, transparent))
-    drop-shadow(0 0 26px color-mix(in oklab, var(--accent) 30%, transparent));
+  filter: drop-shadow(0 0 10px rgba(226, 182, 100, .4));
 }
 @media (prefers-reduced-motion: no-preference) {
   .wc-fact b { animation: wcFactShine 2.6s linear infinite; }
   @keyframes wcFactShine { from { background-position: 200% 50%; } to { background-position: -50% 50%; } }
 }
-.wc-fact span { color: var(--muted); font-size: 13.5px; font-weight: 700; }
+.wc-fact span { color: var(--muted); font-size: 12.5px; font-weight: 700; white-space: nowrap; }
 .wc-fact b.wc-fact-4k {
-  font-size: clamp(32px, 3.6vw, 46px) !important;
+  font-size: clamp(24px, 2.8vw, 36px) !important;
   line-height: 1 !important;
   font-family: var(--font-head) !important;
   display: inline-block !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+@media (max-width: 560px) {
+  .wc-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+  .wc-fact + .wc-fact { border: none; padding: 0; margin: 0; }
 }
 .wc-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
 @media (max-width: 900px) {
@@ -997,36 +999,39 @@ button { font-family: inherit; cursor: pointer; }
 .leagues-kicker {
   text-align: center; color: var(--muted);
   font-family: var(--font-head); font-weight: 700; font-size: 15px;
-  letter-spacing: .02em; margin-bottom: 30px;
+  letter-spacing: .02em; margin-bottom: 32px;
 }
 .leagues-row {
-  display: flex; align-items: center; justify-content: center;
-  gap: 38px; flex-wrap: wrap;
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 16px; align-items: stretch;
 }
 .league-logo {
   display: grid; place-items: center;
-  height: 72px; width: 110px; flex: none;
+  height: 88px; padding: 0 16px; box-sizing: border-box;
+  background: color-mix(in oklab, var(--surface) 55%, transparent);
+  border: 1px solid var(--line); border-radius: 16px;
+  transition: border-color .25s ease, transform .25s ease, background .25s ease;
+}
+.league-logo:hover {
+  border-color: var(--line-strong); transform: translateY(-3px);
+  background: color-mix(in oklab, var(--surface) 82%, transparent);
 }
 .league-logo img {
-  max-height: 72px; max-width: 100%; object-fit: contain;
-  /* static rgba (not color-mix) so the whole filter stays valid across browsers
-     — otherwise the brightness/invert is dropped and the logos render dark. */
-  filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(226, 182, 100, .5));
-  opacity: .92;
-  transition: opacity .25s ease, transform .25s ease, filter .25s ease;
+  max-height: 42px; max-width: 100%; object-fit: contain;
+  /* Normalize every logo to clean white so colored/dark source files read
+     consistently on the dark tiles. The filter is brightness+invert ONLY —
+     no color-mix inside it (some mobile browsers drop a filter that contains
+     color-mix, which left the colored logos rendering in their dark original). */
+  filter: brightness(0) invert(1);
+  opacity: .82; transition: opacity .25s ease;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .league-logo img { animation: leagueGlow 3.6s ease-in-out infinite alternate; }
-  @keyframes leagueGlow {
-    from { filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(226, 182, 100, .25)); }
-    to { filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(226, 182, 100, .65)); }
-  }
+.league-logo:hover img { opacity: 1; }
+@media (max-width: 900px) {
+  .leagues-row { grid-template-columns: repeat(3, 1fr); }
 }
-.league-logo:hover img { opacity: 1; transform: scale(1.08); }
-@media (max-width: 640px) {
-  .leagues-row { gap: 22px 30px; }
-  .league-logo { height: 54px; width: 84px; }
-  .league-logo img { max-height: 54px; }
+@media (max-width: 480px) {
+  .leagues-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .league-logo { height: 78px; }
 }
 
 /* ---------- Reveal animation ---------- */
