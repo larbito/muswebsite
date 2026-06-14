@@ -1,5 +1,7 @@
 node_modules/
 *.log
 .DS_Store
+# Real SMTP credentials live only on the server, never in git
+api/config.php
 # Drag-drop image overrides written at runtime by image-slot.js
 tvdyalek/*.state.json

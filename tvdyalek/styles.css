@@ -921,7 +921,7 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--muted); font-size: 12.5px; font-weight: 700;
   border-top: 1px solid var(--line); padding-top: 16px; margin-top: 4px;
 }
-.co-secure > svg { width: 14px; height: 14px; color: var(--accent); }
+.co-secure svg { width: 14px; height: 14px; color: var(--accent); }
 .co-secure .pay-logos { margin-inline-start: 6px; }
 
 /* ---------- Legal modal body ---------- */
@@ -1145,6 +1145,15 @@ button { font-family: inherit; cursor: pointer; }
 .thanks-card h1 { font-size: 30px; font-weight: 700; }
 .thanks-card > p { color: var(--muted); font-size: 16px; line-height: 1.9; max-width: 42ch; }
 .thanks-price { color: var(--accent-soft); font-weight: 800; }
+.order-id {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--surface-2); border: 1px dashed var(--line-strong);
+  border-radius: 12px; padding: 12px 28px;
+}
+.order-id span { color: var(--muted); font-size: 12.5px; font-weight: 700; }
+.order-id b { font-family: var(--font-head); font-size: 22px; color: var(--accent-soft); letter-spacing: .08em; }
+.thanks-hint { color: var(--muted); font-size: 13.5px; line-height: 1.8; max-width: 42ch; margin-top: -4px; }
+.thanks-hint b { color: var(--accent-soft); }
 .wa-cta { width: 100%; max-width: 340px; }
 .thanks-steps {
   list-style: none; padding: 18px 0 0; margin: 4px 0 0; width: 100%;

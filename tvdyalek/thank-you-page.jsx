@@ -1,6 +1,7 @@
 // TVDYALEK — standalone thank-you PAGE shown after checkout.
-// Reads ?plan=<id>&name=<name> to personalise the confirmation, and offers a
-// prefilled WhatsApp button so the visitor can complete the bank transfer.
+// Reads ?plan=<id>&name=<name>&oid=<orderId> to personalise the confirmation,
+// shows the order ID, and offers a prefilled WhatsApp button (including the
+// order ID) so the visitor can complete the bank transfer.
 const { I, PLANS, TRIAL } = window.TVD;
 const CO_PLANS = [TRIAL].concat(PLANS);
 const WA_NUMBER = '212714561749';
@@ -13,10 +14,13 @@ function ThankYouPage() {
   const params = new URLSearchParams(window.location.search);
   const plan = CO_PLANS.find((p) => p.id === params.get('plan'));
   const name = (params.get('name') || '').trim();
+  const orderId = (params.get('oid') || '').trim();
   const first = name.split(' ')[0] || 'لك';
   const waText = encodeURIComponent(
-    'مرحباً 👋 لقد طلبت' + (plan ? ' باقة ' + plan.name : ' اشتراكاً') + ' في TVDYALEK' +
-    (name ? ' باسم ' + name : '') + '. المرجو إرسال معلومات الدفع. شكراً!'
+    'مرحباً 👋 لقد قمت بطلب' + (plan ? ' باقة ' + plan.name : ' اشتراك') + ' عبر موقع TVDYALEK' +
+    (orderId ? '\nرقم الطلب: ' + orderId : '') +
+    (name ? '\nالاسم: ' + name : '') +
+    '\nالمرجو إرسال معلومات الدفع لإتمام الاشتراك. شكراً!'
   );
   const waLink = 'https://wa.me/' + WA_NUMBER + '?text=' + waText;
 
@@ -32,15 +36,28 @@ function ThankYouPage() {
       <main className="page-main">
         <div className="thanks-card">
           <span className="thanks-icon"><Icon name="check" /></span>
-          <h1>شكراً {first}! 🎉</h1>
+          <h1>تم تأكيد طلبك، {first}! 🎉</h1>
           <p>
             تم استلام طلب {plan ? <b>باقة {plan.name}</b> : 'اشتراكك'}
             {plan ? <span className="thanks-price"> — {plan.price} درهم</span> : null}.
-            تواصل معنا الآن عبر واتساب لإتمام الدفع والحصول على بيانات التفعيل خلال دقائق.
+            أرسلنا لك تأكيداً على بريدك الإلكتروني، وسيتواصل معك أحد مسؤولينا قريباً عبر واتساب لإتمام الدفع.
           </p>
+
+          {orderId && (
+            <div className="order-id">
+              <span>رقم طلبك</span>
+              <b>{orderId}</b>
+            </div>
+          )}
+
           <a className="btn btn-primary btn-lg btn-shine wa-cta" href={waLink}>
-            <Icon name="whatsapp" /> أكمل عبر واتساب
+            <Icon name="whatsapp" /> تواصل عبر واتساب الآن
           </a>
+          <p className="thanks-hint">
+            لم يصلك رد خلال 10 دقائق؟ تواصل معنا مباشرة عبر الزر أعلاه واذكر رقم طلبك
+            {orderId ? <b> ({orderId})</b> : null}.
+          </p>
+
           <ul className="thanks-steps">
             <li><Icon name="check" /> سنرسل لك معلومات الحساب البنكي على واتساب</li>
             <li><Icon name="check" /> يتم التفعيل فور التوصل بإشعار التحويل</li>
