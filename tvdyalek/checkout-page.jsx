@@ -1,7 +1,7 @@
 // TVDYALEK — standalone checkout PAGE.
-// Reads the chosen plan from ?plan=<id>, collects name + WhatsApp + email,
-// generates an order ID, posts it to the mailer (which emails the client and
-// the admins), then sends the visitor to thank-you.html with the order details.
+// Reads the chosen plan from ?plan=<id>, collects name + WhatsApp, generates an
+// order ID, posts it to the mailer (which notifies the admins by email), then
+// sends the visitor to thank-you.html with the order details.
 const { I, PLANS, TRIAL } = window.TVD;
 const CO_PLANS = [TRIAL].concat(PLANS);
 const API_URL = 'https://api.tvdyalek.store/order.php';
@@ -19,7 +19,7 @@ function CheckoutPage() {
   const params = new URLSearchParams(window.location.search);
   const initial = CO_PLANS.find((p) => p.id === params.get('plan')) || PLANS[3];
   const [sel, setSel] = React.useState(initial);
-  const [form, setForm] = React.useState({ name: '', phone: '', email: '' });
+  const [form, setForm] = React.useState({ name: '', phone: '' });
   const [errs, setErrs] = React.useState({});
   const [busy, setBusy] = React.useState(false);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -28,19 +28,18 @@ function CheckoutPage() {
     const er = {};
     if (!form.name.trim()) er.name = 'المرجو إدخال اسمك الكامل';
     if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 9) er.phone = 'المرجو إدخال رقم واتساب صحيح';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) er.email = 'المرجو إدخال بريد إلكتروني صحيح';
     setErrs(er);
     if (Object.keys(er).length) return;
 
     const orderId = makeOrderId();
     const payload = {
       orderId, planId: sel.id, planName: sel.name, price: sel.price,
-      name: form.name.trim(), phone: form.phone.trim(), email: form.email.trim(),
+      name: form.name.trim(), phone: form.phone.trim(),
     };
 
     setBusy(true);
-    // Best-effort: email is supplementary to the WhatsApp flow, so we proceed to
-    // the thank-you page even if the mail API is briefly unreachable.
+    // Best-effort: the admin email is supplementary to the WhatsApp flow, so we
+    // proceed to the thank-you page even if the mail API is briefly unreachable.
     try {
       await fetch(API_URL, {
         method: 'POST',
@@ -92,13 +91,7 @@ function CheckoutPage() {
           </div>
 
           <div className="field">
-            <label>البريد الإلكتروني (لإرسال تأكيد الطلب)</label>
-            <input className={errs.email ? 'err' : ''} type="email" value={form.email} onChange={set('email')} placeholder="example@email.com" dir="ltr" style={{ textAlign: 'end' }} />
-            {errs.email && <span className="field-err">{errs.email}</span>}
-          </div>
-
-          <div className="field">
-            <label>رقم الواتساب (لإرسال بيانات التفعيل)</label>
+            <label>رقم الواتساب (سنتواصل معك عليه)</label>
             <input className={errs.phone ? 'err' : ''} value={form.phone} onChange={set('phone')} placeholder="06 XX XX XX XX" dir="ltr" style={{ textAlign: 'end' }} />
             {errs.phone && <span className="field-err">{errs.phone}</span>}
           </div>

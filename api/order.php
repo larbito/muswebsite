@@ -1,9 +1,10 @@
 <?php
 /**
  * TVDYALEK — order mailer endpoint.
- * Receives a checkout order (JSON), emails a confirmation to the client and a
- * notification to the admins via Zoho SMTP. Drop this + config.php into the
- * htdocs of the CloudPanel PHP site for api.tvdyalek.store.
+ * Receives a checkout order (name + WhatsApp + plan), and emails a styled
+ * "new order" notification to the admins via Zoho SMTP. No client email is
+ * collected or sent — the client is contacted on WhatsApp.
+ * Drop this + config.php into the htdocs of the api.tvdyalek.store PHP site.
  */
 
 $cfg = @include __DIR__ . '/config.php';
@@ -29,23 +30,17 @@ $planName = $clean($in['planName'] ?? '');
 $price    = $clean($in['price']    ?? '');
 $name     = $clean($in['name']     ?? '');
 $phone    = $clean($in['phone']    ?? '');
-$email    = $clean($in['email']    ?? '');
 
-if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $phone === '') {
-  http_response_code(422); echo '{"ok":false,"error":"invalid"}'; exit;
-}
+if ($name === '' || $phone === '') { http_response_code(422); echo '{"ok":false,"error":"invalid"}'; exit; }
 if ($orderId === '') $orderId = 'TVD-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 5));
 
-$esc = fn($s) => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+$esc  = fn($s) => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 $when = (new DateTime('now', new DateTimeZone('Africa/Casablanca')))->format('Y-m-d H:i');
 
 // client's WhatsApp in international form (Morocco default) for the admin button
 $waClient = preg_replace('/\D/', '', $phone);
-if (strpos($waClient, '0') === 0) $waClient = '212' . substr($waClient, 1);
-
-// business WhatsApp link for the client email (prefilled with the order id)
-$waBizText = rawurlencode("مرحباً 👋 لقد قمت بطلب باقة {$planName} عبر موقع TVDYALEK\nرقم الطلب: {$orderId}\nالاسم: {$name}\nالمرجو إرسال معلومات الدفع. شكراً!");
-$waBizLink = 'https://wa.me/' . $cfg['wa_number'] . '?text=' . $waBizText;
+if (strpos($waClient, '00') === 0)      $waClient = substr($waClient, 2);             // 00212... -> 212...
+elseif (strpos($waClient, '0') === 0)   $waClient = '212' . substr($waClient, 1);    // 06... -> 2126...
 
 // ---------- Email shell (dark + gold, inline styles for email clients) ----------
 function shell(string $inner): string {
@@ -53,7 +48,7 @@ function shell(string $inner): string {
     . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0b0908;padding:28px 14px;"><tr><td align="center">'
     . '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#181209;border:1px solid rgba(220,168,42,.28);border-radius:16px;overflow:hidden;">'
     . '<tr><td style="padding:22px 28px;border-bottom:1px solid rgba(220,168,42,.22);">'
-    . '<span style="font-size:22px;font-weight:bold;letter-spacing:2px;background:linear-gradient(135deg,#f7d877,#dca82a);-webkit-background-clip:text;background-clip:text;color:#dca82a;">TVDYALEK</span>'
+    . '<span style="font-size:22px;font-weight:bold;letter-spacing:2px;color:#dca82a;">TVDYALEK</span>'
     . '</td></tr><tr><td style="padding:30px 28px;">' . $inner . '</td></tr>'
     . '<tr><td style="padding:18px 28px;border-top:1px solid rgba(220,168,42,.22);color:#b0a48c;font-size:12px;line-height:1.8;">'
     . 'TVDYALEK — تلفازك على طريقتك<br>للدعم: support@tvdyalek.store</td></tr>'
@@ -67,19 +62,6 @@ function row(string $k, string $v): string {
     . '<td style="padding:9px 0;color:#f5efe2;font-size:14px;font-weight:bold;text-align:left;" dir="ltr">' . $v . '</td></tr>';
 }
 
-// ---------- Client confirmation ----------
-$clientHtml = shell(
-  '<h1 style="margin:0 0 6px;font-size:24px;color:#f5d265;">تم تأكيد طلبك ✅</h1>'
-  . '<p style="margin:0 0 18px;color:#d8cfbb;font-size:15px;line-height:1.9;">شكراً ' . $esc($name) . '، تم استلام طلبك بنجاح. سيتواصل معك أحد مسؤولينا قريباً عبر واتساب لإتمام عملية الدفع وتفعيل اشتراكك.</p>'
-  . '<table role="presentation" width="100%" style="background:#1f1810;border-radius:12px;padding:6px 18px;margin:0 0 22px;">'
-  . row('رقم الطلب', '<span style="color:#f5d265;letter-spacing:1px;">' . $esc($orderId) . '</span>')
-  . row('الباقة', $esc($planName))
-  . row('السعر', $esc($price) . ' درهم')
-  . '</table>'
-  . '<div style="text-align:center;margin:10px 0 22px;">' . btn($waBizLink, 'تواصل عبر واتساب') . '</div>'
-  . '<p style="margin:0;color:#b0a48c;font-size:13px;line-height:1.9;background:#1f1810;border-radius:10px;padding:14px 18px;">⏱️ لم يصلك رد خلال 10 دقائق؟ تواصل معنا مباشرة عبر الزر أعلاه واذكر رقم طلبك <b style="color:#f5d265;">' . $esc($orderId) . '</b>.</p>'
-);
-
 // ---------- Admin notification ----------
 $waClientLink = 'https://wa.me/' . $waClient;
 $adminHtml = shell(
@@ -88,7 +70,6 @@ $adminHtml = shell(
   . '<table role="presentation" width="100%" style="background:#1f1810;border-radius:12px;padding:6px 18px;margin:0 0 22px;">'
   . row('رقم الطلب', '<span style="color:#f5d265;">' . $esc($orderId) . '</span>')
   . row('الاسم', $esc($name))
-  . row('البريد', $esc($email))
   . row('الواتساب', $esc($phone))
   . row('الباقة', $esc($planName))
   . row('السعر', $esc($price) . ' درهم')
@@ -98,7 +79,7 @@ $adminHtml = shell(
 );
 
 // ---------- Minimal SMTP (implicit SSL on 465 / STARTTLS on 587) ----------
-function smtp_send(array $cfg, array $to, string $subject, string $html, ?string $replyTo = null): array {
+function smtp_send(array $cfg, array $to, string $subject, string $html): array {
   $transport = ($cfg['port'] == 465 ? 'ssl://' : 'tcp://') . $cfg['host'] . ':' . $cfg['port'];
   $fp = @stream_socket_client($transport, $errno, $errstr, 20);
   if (!$fp) return [false, "connect: $errstr"];
@@ -120,7 +101,6 @@ function smtp_send(array $cfg, array $to, string $subject, string $html, ?string
   $say('DATA');
   $h  = 'From: ' . $cfg['from_name'] . ' <' . $cfg['from'] . ">\r\n";
   $h .= 'To: ' . implode(', ', $to) . "\r\n";
-  if ($replyTo) $h .= 'Reply-To: ' . $replyTo . "\r\n";
   $h .= 'Subject: =?UTF-8?B?' . base64_encode($subject) . "?=\r\n";
   $h .= "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n";
   $r = $say($h . "\r\n" . chunk_split(base64_encode($html)) . "\r\n.");
@@ -129,7 +109,6 @@ function smtp_send(array $cfg, array $to, string $subject, string $html, ?string
   return [strpos($r, '250') !== false, $r];
 }
 
-[$okClient] = smtp_send($cfg, [$email], 'تأكيد طلبك في TVDYALEK — ' . $orderId, $clientHtml);
-[$okAdmin]  = smtp_send($cfg, $cfg['admins'], 'طلب جديد ' . $orderId . ' — ' . $name, $adminHtml, $email);
+[$okAdmin] = smtp_send($cfg, $cfg['admins'], 'طلب جديد ' . $orderId . ' — ' . $name, $adminHtml);
 
-echo json_encode(['ok' => ($okClient || $okAdmin), 'orderId' => $orderId, 'client' => $okClient, 'admin' => $okAdmin]);
+echo json_encode(['ok' => $okAdmin, 'orderId' => $orderId, 'admin' => $okAdmin]);

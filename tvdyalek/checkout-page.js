@@ -1,9 +1,9 @@
 (function () {
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 // TVDYALEK — standalone checkout PAGE.
-// Reads the chosen plan from ?plan=<id>, collects name + WhatsApp + email,
-// generates an order ID, posts it to the mailer (which emails the client and
-// the admins), then sends the visitor to thank-you.html with the order details.
+// Reads the chosen plan from ?plan=<id>, collects name + WhatsApp, generates an
+// order ID, posts it to the mailer (which notifies the admins by email), then
+// sends the visitor to thank-you.html with the order details.
 const {
   I,
   PLANS,
@@ -35,8 +35,7 @@ function CheckoutPage() {
   const [sel, setSel] = React.useState(initial);
   const [form, setForm] = React.useState({
     name: '',
-    phone: '',
-    email: ''
+    phone: ''
   });
   const [errs, setErrs] = React.useState({});
   const [busy, setBusy] = React.useState(false);
@@ -48,7 +47,6 @@ function CheckoutPage() {
     const er = {};
     if (!form.name.trim()) er.name = 'المرجو إدخال اسمك الكامل';
     if (!form.phone.trim() || form.phone.replace(/\D/g, '').length < 9) er.phone = 'المرجو إدخال رقم واتساب صحيح';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) er.email = 'المرجو إدخال بريد إلكتروني صحيح';
     setErrs(er);
     if (Object.keys(er).length) return;
     const orderId = makeOrderId();
@@ -58,12 +56,11 @@ function CheckoutPage() {
       planName: sel.name,
       price: sel.price,
       name: form.name.trim(),
-      phone: form.phone.trim(),
-      email: form.email.trim()
+      phone: form.phone.trim()
     };
     setBusy(true);
-    // Best-effort: email is supplementary to the WhatsApp flow, so we proceed to
-    // the thank-you page even if the mail API is briefly unreachable.
+    // Best-effort: the admin email is supplementary to the WhatsApp flow, so we
+    // proceed to the thank-you page even if the mail API is briefly unreachable.
     try {
       await fetch(API_URL, {
         method: 'POST',
@@ -132,21 +129,7 @@ function CheckoutPage() {
     className: "field-err"
   }, errs.name)), /*#__PURE__*/React.createElement("div", {
     className: "field"
-  }, /*#__PURE__*/React.createElement("label", null, "\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A (\u0644\u0625\u0631\u0633\u0627\u0644 \u062A\u0623\u0643\u064A\u062F \u0627\u0644\u0637\u0644\u0628)"), /*#__PURE__*/React.createElement("input", {
-    className: errs.email ? 'err' : '',
-    type: "email",
-    value: form.email,
-    onChange: set('email'),
-    placeholder: "example@email.com",
-    dir: "ltr",
-    style: {
-      textAlign: 'end'
-    }
-  }), errs.email && /*#__PURE__*/React.createElement("span", {
-    className: "field-err"
-  }, errs.email)), /*#__PURE__*/React.createElement("div", {
-    className: "field"
-  }, /*#__PURE__*/React.createElement("label", null, "\u0631\u0642\u0645 \u0627\u0644\u0648\u0627\u062A\u0633\u0627\u0628 (\u0644\u0625\u0631\u0633\u0627\u0644 \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062A\u0641\u0639\u064A\u0644)"), /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React.createElement("label", null, "\u0631\u0642\u0645 \u0627\u0644\u0648\u0627\u062A\u0633\u0627\u0628 (\u0633\u0646\u062A\u0648\u0627\u0635\u0644 \u0645\u0639\u0643 \u0639\u0644\u064A\u0647)"), /*#__PURE__*/React.createElement("input", {
     className: errs.phone ? 'err' : '',
     value: form.phone,
     onChange: set('phone'),
