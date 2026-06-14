@@ -11,6 +11,19 @@ const {
 } = window.TVD;
 const CO_PLANS = [TRIAL].concat(PLANS);
 const API_URL = 'https://api.tvdyalek.store/order.php';
+const PAY_METHODS = [{
+  src: 'tvdyalek/pay/baridbank.jpg',
+  name: 'Barid Bank'
+}, {
+  src: 'tvdyalek/pay/cih.jpg',
+  name: 'CIH Bank'
+}, {
+  src: 'tvdyalek/pay/cashplus.jpg',
+  name: 'Cash Plus'
+}, {
+  src: 'tvdyalek/pay/wafacash.jpg',
+  name: 'Wafacash'
+}];
 function Icon({
   name,
   ...rest
@@ -124,7 +137,7 @@ function CheckoutPage() {
     className: errs.name ? 'err' : '',
     value: form.name,
     onChange: set('name'),
-    placeholder: "\u0645\u062B\u0627\u0644: \u0645\u0635\u0637\u0641\u0649 \u0627\u0644\u0639\u0644\u0648\u064A"
+    placeholder: "\u0627\u0643\u062A\u0628 \u0627\u0633\u0645\u0643 \u0647\u0646\u0627"
   }), errs.name && /*#__PURE__*/React.createElement("span", {
     className: "field-err"
   }, errs.name)), /*#__PURE__*/React.createElement("div", {
@@ -142,16 +155,19 @@ function CheckoutPage() {
     className: "field-err"
   }, errs.phone)), /*#__PURE__*/React.createElement("div", {
     className: "field"
-  }, /*#__PURE__*/React.createElement("label", null, "\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639"), /*#__PURE__*/React.createElement("div", {
-    className: "pay-opts"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "pay-opt sel",
-    type: "button"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "bank"
-  }), " \u062A\u062D\u0648\u064A\u0644 \u0628\u0646\u0643\u064A"))), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("label", null, "\u0637\u0631\u0642 \u0627\u0644\u062F\u0641\u0639 \u0627\u0644\u0645\u062A\u0627\u062D\u0629"), /*#__PURE__*/React.createElement("div", {
+    className: "pay-methods"
+  }, PAY_METHODS.map(p => /*#__PURE__*/React.createElement("span", {
+    className: "pay-chip",
+    key: p.name,
+    title: p.name
+  }, /*#__PURE__*/React.createElement("img", {
+    src: p.src,
+    alt: p.name,
+    loading: "lazy"
+  }))))), /*#__PURE__*/React.createElement("p", {
     className: "co-note"
-  }, "\u0628\u0639\u062F \u062A\u0623\u0643\u064A\u062F \u0627\u0644\u0637\u0644\u0628\u060C \u0646\u0631\u0633\u0644 \u0644\u0643 \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u062D\u0633\u0627\u0628 \u0627\u0644\u0628\u0646\u0643\u064A \u0639\u0644\u0649 \u0648\u0627\u062A\u0633\u0627\u0628 \u0645\u0628\u0627\u0634\u0631\u0629. \u064A\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0634\u062A\u0631\u0627\u0643\u0643 \u0641\u0648\u0631 \u0627\u0644\u062A\u0648\u0635\u0644 \u0628\u0625\u0634\u0639\u0627\u0631 \u0627\u0644\u062A\u062D\u0648\u064A\u0644 \u2014 \u0639\u0627\u062F\u0629 \u062E\u0644\u0627\u0644 \u062F\u0642\u0627\u0626\u0642."), /*#__PURE__*/React.createElement("button", {
+  }, "\u0628\u0639\u062F \u062A\u0623\u0643\u064A\u062F \u0627\u0644\u0637\u0644\u0628\u060C \u0646\u0631\u0633\u0644 \u0644\u0643 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u062F\u0641\u0639 \u0639\u0628\u0631 \u0648\u0627\u062A\u0633\u0627\u0628 \u0645\u0628\u0627\u0634\u0631\u0629 (\u062A\u062D\u0648\u064A\u0644 \u0628\u0646\u0643\u064A \u0623\u0648 \u0648\u0643\u0627\u0644\u0629). \u064A\u062A\u0645 \u062A\u0641\u0639\u064A\u0644 \u0627\u0634\u062A\u0631\u0627\u0643\u0643 \u0641\u0648\u0631 \u0627\u0644\u062A\u0648\u0635\u0644 \u0628\u0625\u0634\u0639\u0627\u0631 \u0627\u0644\u062F\u0641\u0639 \u2014 \u0639\u0627\u062F\u0629 \u062E\u0644\u0627\u0644 \u062F\u0642\u0627\u0626\u0642."), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-primary btn-lg",
     onClick: submit,
     disabled: busy

@@ -239,7 +239,7 @@ function Footer() {
           <button onClick={() => setLegal('refund')}>سياسة الاسترداد</button>
           <button onClick={() => setLegal('privacy')}>سياسة الخصوصية</button>
         </nav>
-        <PayLogos />
+        <PayMethods label="طرق الدفع المتاحة" />
         <p>© 2026 TVDYALEK — جميع الحقوق محفوظة</p>
       </div>
       {legal && <LegalModal doc={legal} onClose={() => setLegal(null)} />}

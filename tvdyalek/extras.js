@@ -18,6 +18,40 @@ function PayLogos({
   }), " \u062A\u062D\u0648\u064A\u0644 \u0628\u0646\u0643\u064A"));
 }
 
+/* ---------- Accepted payment methods (logos) ---------- */
+const PAY_METHODS = [{
+  src: 'tvdyalek/pay/baridbank.jpg',
+  name: 'Barid Bank'
+}, {
+  src: 'tvdyalek/pay/cih.jpg',
+  name: 'CIH Bank'
+}, {
+  src: 'tvdyalek/pay/cashplus.jpg',
+  name: 'Cash Plus'
+}, {
+  src: 'tvdyalek/pay/wafacash.jpg',
+  name: 'Wafacash'
+}];
+function PayMethods({
+  label
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "pay-methods-block"
+  }, label && /*#__PURE__*/React.createElement("div", {
+    className: "pay-methods-label"
+  }, label), /*#__PURE__*/React.createElement("div", {
+    className: "pay-methods"
+  }, PAY_METHODS.map(p => /*#__PURE__*/React.createElement("span", {
+    className: "pay-chip",
+    key: p.name,
+    title: p.name
+  }, /*#__PURE__*/React.createElement("img", {
+    src: p.src,
+    alt: p.name,
+    loading: "lazy"
+  })))));
+}
+
 /* ---------- Legal modal (terms / refund / privacy) ---------- */
 const LEGAL = {
   terms: {
@@ -247,6 +281,7 @@ function BackToTop() {
 }
 Object.assign(window, {
   PayLogos,
+  PayMethods,
   LegalModal,
   ChannelCats,
   ScrollNudge,

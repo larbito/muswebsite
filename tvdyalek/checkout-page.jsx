@@ -5,6 +5,12 @@
 const { I, PLANS, TRIAL } = window.TVD;
 const CO_PLANS = [TRIAL].concat(PLANS);
 const API_URL = 'https://api.tvdyalek.store/order.php';
+const PAY_METHODS = [
+  { src: 'tvdyalek/pay/baridbank.jpg', name: 'Barid Bank' },
+  { src: 'tvdyalek/pay/cih.jpg', name: 'CIH Bank' },
+  { src: 'tvdyalek/pay/cashplus.jpg', name: 'Cash Plus' },
+  { src: 'tvdyalek/pay/wafacash.jpg', name: 'Wafacash' },
+];
 
 function Icon({ name, ...rest }) {
   return <span className="ico" dangerouslySetInnerHTML={{ __html: I[name] }} style={{ display: 'contents' }} {...rest}></span>;
@@ -86,7 +92,7 @@ function CheckoutPage() {
 
           <div className="field">
             <label>الاسم الكامل</label>
-            <input className={errs.name ? 'err' : ''} value={form.name} onChange={set('name')} placeholder="مثال: مصطفى العلوي" />
+            <input className={errs.name ? 'err' : ''} value={form.name} onChange={set('name')} placeholder="اكتب اسمك هنا" />
             {errs.name && <span className="field-err">{errs.name}</span>}
           </div>
 
@@ -97,14 +103,18 @@ function CheckoutPage() {
           </div>
 
           <div className="field">
-            <label>طريقة الدفع</label>
-            <div className="pay-opts">
-              <button className="pay-opt sel" type="button"><Icon name="bank" /> تحويل بنكي</button>
+            <label>طرق الدفع المتاحة</label>
+            <div className="pay-methods">
+              {PAY_METHODS.map((p) => (
+                <span className="pay-chip" key={p.name} title={p.name}>
+                  <img src={p.src} alt={p.name} loading="lazy" />
+                </span>
+              ))}
             </div>
           </div>
           <p className="co-note">
-            بعد تأكيد الطلب، نرسل لك معلومات الحساب البنكي على واتساب مباشرة. يتم تفعيل اشتراكك فور
-            التوصل بإشعار التحويل — عادة خلال دقائق.
+            بعد تأكيد الطلب، نرسل لك تفاصيل الدفع عبر واتساب مباشرة (تحويل بنكي أو وكالة).
+            يتم تفعيل اشتراكك فور التوصل بإشعار الدفع — عادة خلال دقائق.
           </p>
 
           <button className="btn btn-primary btn-lg" onClick={submit} disabled={busy}>

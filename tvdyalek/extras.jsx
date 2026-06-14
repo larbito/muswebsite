@@ -11,6 +11,28 @@ function PayLogos({ compact }) {
   );
 }
 
+/* ---------- Accepted payment methods (logos) ---------- */
+const PAY_METHODS = [
+  { src: 'tvdyalek/pay/baridbank.jpg', name: 'Barid Bank' },
+  { src: 'tvdyalek/pay/cih.jpg', name: 'CIH Bank' },
+  { src: 'tvdyalek/pay/cashplus.jpg', name: 'Cash Plus' },
+  { src: 'tvdyalek/pay/wafacash.jpg', name: 'Wafacash' },
+];
+function PayMethods({ label }) {
+  return (
+    <div className="pay-methods-block">
+      {label && <div className="pay-methods-label">{label}</div>}
+      <div className="pay-methods">
+        {PAY_METHODS.map((p) => (
+          <span className="pay-chip" key={p.name} title={p.name}>
+            <img src={p.src} alt={p.name} loading="lazy" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ---------- Legal modal (terms / refund / privacy) ---------- */
 const LEGAL = {
   terms: {
@@ -175,4 +197,4 @@ function BackToTop() {
   );
 }
 
-Object.assign(window, { PayLogos, LegalModal, ChannelCats, ScrollNudge, BackToTop, WA_LINK, LeagueLogos });
+Object.assign(window, { PayLogos, PayMethods, LegalModal, ChannelCats, ScrollNudge, BackToTop, WA_LINK, LeagueLogos });

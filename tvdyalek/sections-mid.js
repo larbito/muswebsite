@@ -270,7 +270,9 @@ function Footer() {
     onClick: () => setLegal('refund')
   }, "\u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u0627\u0633\u062A\u0631\u062F\u0627\u062F"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setLegal('privacy')
-  }, "\u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629")), /*#__PURE__*/React.createElement(PayLogos, null), /*#__PURE__*/React.createElement("p", null, "\xA9 2026 TVDYALEK \u2014 \u062C\u0645\u064A\u0639 \u0627\u0644\u062D\u0642\u0648\u0642 \u0645\u062D\u0641\u0648\u0638\u0629")), legal && /*#__PURE__*/React.createElement(LegalModal, {
+  }, "\u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629")), /*#__PURE__*/React.createElement(PayMethods, {
+    label: "\u0637\u0631\u0642 \u0627\u0644\u062F\u0641\u0639 \u0627\u0644\u0645\u062A\u0627\u062D\u0629"
+  }), /*#__PURE__*/React.createElement("p", null, "\xA9 2026 TVDYALEK \u2014 \u062C\u0645\u064A\u0639 \u0627\u0644\u062D\u0642\u0648\u0642 \u0645\u062D\u0641\u0648\u0638\u0629")), legal && /*#__PURE__*/React.createElement(LegalModal, {
     doc: legal,
     onClose: () => setLegal(null)
   }));

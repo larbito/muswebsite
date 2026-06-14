@@ -918,6 +918,17 @@ button { font-family: inherit; cursor: pointer; }
 .co-secure svg { width: 14px; height: 14px; color: var(--accent); }
 .co-secure .pay-logos { margin-inline-start: 6px; }
 
+/* ---------- Accepted payment method logos (white chips) ---------- */
+.pay-methods-block { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.pay-methods-label { color: var(--muted); font-size: 13px; font-weight: 700; }
+.pay-methods { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.pay-chip {
+  display: grid; place-items: center;
+  height: 46px; min-width: 84px; padding: 6px 14px; box-sizing: border-box;
+  background: #fff; border-radius: 10px; border: 1px solid rgba(0,0,0,.08);
+}
+.pay-chip img { max-height: 30px; max-width: 92px; object-fit: contain; display: block; }
+
 /* ---------- Legal modal body ---------- */
 .legal-body { max-height: 60vh; overflow-y: auto; }
 .legal-body p { color: var(--muted); font-size: 14.5px; line-height: 1.95; }
@@ -1098,8 +1109,8 @@ button { font-family: inherit; cursor: pointer; }
   .hero-stat span { font-size: 12.5px; }
   .hero-stat + .hero-stat { border: none; padding: 0; }
   .show-row { grid-template-columns: repeat(2, 1fr); }
-  .section { padding: 40px 0; }
-  .section-head { margin-bottom: 30px; }
+  .section { padding: 20px 0; }
+  .section-head { margin-bottom: 24px; }
 }
 
 /* ---------- Standalone pages: checkout.html / thank-you.html ---------- */
