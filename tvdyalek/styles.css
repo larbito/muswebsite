@@ -1076,22 +1076,33 @@ button { font-family: inherit; cursor: pointer; }
   .nav-links { display: none; }
 }
 @media (max-width: 640px) {
+  .wrap { padding-inline: 17px; }
   .features, .plans { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 34px; line-height: 1.18; }
-  .hero-sub { font-size: 16.5px; }
-  /* show the whole sports photo (all players) instead of a tight crop */
-  .hero-slide { background-size: contain; background-position: center 32%; }
+
+  /* Hero on phones: a full-width photo banner on top (landscape photo in a
+     landscape box = all players visible, no crop/letterbox), then the text and
+     CTAs on solid dark below. */
+  .hero { display: flex; flex-direction: column; }
+  .hero-slider { position: relative; inset: auto; height: 218px; flex: none; }
+  .hero-slide { background-size: cover; background-position: center 22%; }
   .hero-slide.on { animation: none; }
-  .hero-ctas { gap: 12px; margin-top: 28px; }
+  .hero-slider::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(11,9,8,.12) 0%, transparent 32%, var(--bg) 97%);
+  }
+  .hero-veil { display: none; }
+  .hero-inner { padding-block: 22px 52px; gap: 32px; }
+
+  .hero h1 { font-size: 32px; line-height: 1.2; }
+  .hero-sub { font-size: 16px; }
+  .hero-ctas { gap: 12px; margin-top: 26px; }
   .hero-ctas .btn { flex: 1 1 0; justify-content: center; }
   .hero-rating { width: 100%; box-sizing: border-box; }
-  /* even 2x2 grid; smaller numbers so +120,000 / +60,000 don't crowd the edge */
   .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
   .hero-stat { min-width: 0; }
   .hero-stat b { font-size: 20px; }
   .hero-stat span { font-size: 12.5px; }
   .hero-stat + .hero-stat { border: none; padding: 0; }
-  .hero-stat b, .hero-stat span { text-shadow: 0 1px 8px rgba(0,0,0,.7); }
   .show-row { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
 }
