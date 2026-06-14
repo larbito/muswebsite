@@ -19,7 +19,6 @@ const THEME_NAMES = {
 };
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [order, setOrder] = React.useState(null); // null | {plan?}
 
   // Apply tweaks to :root
   React.useEffect(() => {
@@ -59,9 +58,11 @@ function App() {
       io.disconnect();
     };
   }, []);
-  const openOrder = plan => setOrder({
-    plan: plan || null
-  });
+
+  // Checkout is now a dedicated page (not a modal). Carry the chosen plan via ?plan=
+  const openOrder = plan => {
+    window.location.href = 'checkout.html' + (plan && plan.id ? '?plan=' + encodeURIComponent(plan.id) : '');
+  };
   return /*#__PURE__*/React.createElement(React.Fragment, null, t.ambient && /*#__PURE__*/React.createElement(AmbientBg, null), t.promo && /*#__PURE__*/React.createElement(PromoBar, null), /*#__PURE__*/React.createElement(Nav, {
     onOrder: openOrder
   }), /*#__PURE__*/React.createElement(Hero, {
@@ -84,10 +85,7 @@ function App() {
     onOrder: openOrder
   }), /*#__PURE__*/React.createElement(ScrollNudge, {
     onOrder: openOrder
-  }), /*#__PURE__*/React.createElement(BackToTop, null), order && /*#__PURE__*/React.createElement(Checkout, {
-    plan: order.plan,
-    onClose: () => setOrder(null)
-  }), /*#__PURE__*/React.createElement(TweaksPanel, null, /*#__PURE__*/React.createElement(TweakSection, {
+  }), /*#__PURE__*/React.createElement(BackToTop, null), /*#__PURE__*/React.createElement(TweaksPanel, null, /*#__PURE__*/React.createElement(TweakSection, {
     label: "\u0627\u0644\u0647\u0648\u064A\u0629 \u0627\u0644\u0628\u0635\u0631\u064A\u0629"
   }), /*#__PURE__*/React.createElement(TweakRadio, {
     label: "\u0627\u0644\u062B\u064A\u0645",

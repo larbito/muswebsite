@@ -23,10 +23,12 @@ const FILES = [
   'tweaks-panel',
   'sections-top',
   'sections-mid',
-  'checkout',
   'sections-conv',
   'extras',
   'app',
+  // standalone pages (each renders its own #root)
+  'checkout-page',
+  'thank-you-page',
 ];
 
 for (const name of FILES) {
