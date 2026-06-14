@@ -8,7 +8,7 @@ function Showcase() {
         <div className="section-head reveal">
           <div className="section-kicker">المحتوى</div>
           <h2>أحدث الأفلام والمسلسلات.. فور صدورها</h2>
-          <p>أسقط بوسترات أعمالك المفضلة في الإطارات لتخصيص واجهة الموقع — أو اتركها كمعاينة.</p>
+          <p>مكتبة ضخمة تتجدّد يومياً: أحدث الأفلام والمسلسلات العالمية والعربية بجودة 4K، تُضاف فور صدورها — بدون انتظار وبدون إعلانات.</p>
         </div>
         <div className="showcase-rows">
           <div className="reveal">

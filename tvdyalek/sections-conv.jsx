@@ -104,6 +104,7 @@ function DuoOffer({ onOrder }) {
             <div className="duo-sub">≈ 29 درهماً في الشهر فقط + شهر إضافي هدية 🎁</div>
             <ul>
               <li><Icon name="check" /> 13 شهراً بأقل من ثلث سعر الاشتراك الشهري</li>
+              <li><Icon name="check" /> تفعيل التطبيق مجاناً 🎁 — خاص بباقة السنة</li>
               <li><Icon name="check" /> سيرفر احتياطي مجاني وأولوية قصوى في الدعم</li>
               <li><Icon name="check" /> سعر مجمّد — بدون أي زيادة عند التجديد</li>
             </ul>
@@ -219,8 +220,8 @@ function MidCtaYear({ onOrder }) {
         <div className="midcta-card reveal">
           <div className="midcta-copy">
             <div className="midcta-kicker">العرض الأكثر طلباً — وفّر 45%</div>
-            <h3>سنة كاملة + شهر هدية 🎁</h3>
-            <p>≈ 33 درهماً في الشهر فقط — سعر مجمّد بدون أي زيادة عند التجديد</p>
+            <h3>سنة كاملة + شهر هدية + تفعيل مجاني 🎁</h3>
+            <p>≈ 29 درهماً في الشهر فقط — مع تفعيل التطبيق مجاناً وسعر مجمّد بدون أي زيادة عند التجديد</p>
           </div>
           <div className="midcta-price"><span className="grad-text">{m12.price} درهم</span><small>لسنة كاملة</small></div>
           <button className="btn btn-primary btn-lg btn-shine" onClick={() => onOrder(m12)}>اشترك سنة كاملة</button>
